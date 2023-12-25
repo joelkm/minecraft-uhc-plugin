@@ -27,7 +27,7 @@ public class Plugin extends JavaPlugin
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (label.equalsIgnoreCase("startuhc")) {
         if (sender instanceof Player) { // TODO: Check op role
-            new UhcGame();
+            new UhcGame(this);
             return true;
         }
     }

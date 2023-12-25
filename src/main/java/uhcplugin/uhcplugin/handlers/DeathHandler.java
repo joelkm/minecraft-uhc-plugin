@@ -5,13 +5,15 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import uhcplugin.uhcplugin.Plugin;
+import uhcplugin.uhcplugin.UhcGame;
+
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 /**
  * DeathHandler
  */
 public class DeathHandler implements Listener {
-    public DeathHandler(Plugin plugin) {
+    public DeathHandler(UhcGame game, Plugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
