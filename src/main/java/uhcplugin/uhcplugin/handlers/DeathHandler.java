@@ -20,6 +20,7 @@ public class DeathHandler implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         
+        
         player.setGameMode(GameMode.SPECTATOR);
     }
 }

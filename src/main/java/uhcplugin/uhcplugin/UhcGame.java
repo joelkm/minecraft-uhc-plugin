@@ -23,13 +23,15 @@ public class UhcGame {
 
     private Plugin plugin;
 
-    private List<Player> players
+    private Scoreboard MainScoreboard;
+
+    private List<Player> players;
     
+    private List<Player> players;
+
     private List<Team> Teams;
     
-    private 
-    
-
+    private Timer Timer;
   
     public UhcGame(Plugin plugin) {
         this.plugin = plugin;
@@ -37,6 +39,8 @@ public class UhcGame {
 
         new DeathHandler(this, this.plugin);
         spawnPlayers();
+
+        this.MainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
         this.scoreboards = createScoreboards();
         new Timer(this.plugin);
@@ -49,7 +53,7 @@ public class UhcGame {
 
     private void spawnPlayers() {        
         // if(onlinePlayers.size() == 12) {
-            Location[] COORDS_SET = { // TODO: Set coords
+            Location[] SpawnLocations = { // TODO: Set coords
                 new Location(null, 0, 0, 0),
                 new Location(null, 0, 0, 0),
                 new Location(null, 0, 0, 0),
@@ -63,13 +67,14 @@ public class UhcGame {
                 new Location(null, 0, 0, 0),
                 new Location(null, 0, 0, 0)
             };
+            // TODO: Readaptable???
 
             for (int i = 0; i < this.players.size(); i++) {
                 Player player = this.players.get(i);
-                Location SpawnCoords = COORDS_SET[i];
 
-                teleportPlayer(player, SpawnCoords.getX(), SpawnCoords.getY(), SpawnCoords.getZ());
-                
+                player.teleport(SpawnLocations[i]);
+                player.setScoreboard();
+
                 player.setHealth(20);
                 player.setFoodLevel(20);
                 // To avoid fall damage
@@ -78,30 +83,21 @@ public class UhcGame {
         // } else {
             
         }
-      // TODO: Readaptable???
-
-    private void teleportPlayer(Player player, double x, double y, double z) {
-      // while (player.getWorld().getBlockAt(x, y, z).getType().isSolid() /* or biome in CAVE_BIOMES */) {
-      //   y++; 
-      // }
-  
-      player.teleport(player.getWorld().getBlockAt(x, y, z).getLocation().add(0.5, 0, 0.5)); // TODO: x,y,z to int
-    }
-
-    private void startTimer() {
-      new Timer(this.plugin);
-    }
 
     private void enableTeaming() {
         for (int i = 0; i < 4; i++) {
-            Scoreboard.registerNewTeam(String.format("Team %s", i));
-            
+            Scoreboard.registerNewTeam(String.format("Team %s", i));   
         }
-      // clck event
-      // proxi event (compass + glow)
     }
 
     private void enableRandomSkinCycles() {
   
+    }
+
+    public void handleTeamChange(Player player, Team oldTeam, Team newTeam) {
+        oldTeam.removeEntry(player);
+        newTeam.addEntry(player);
+    
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }
 }

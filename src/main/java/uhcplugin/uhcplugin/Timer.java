@@ -34,7 +34,7 @@ public class Timer {
         }, 0L, 20L); // Update every second (20 ticks)
     }
 
-    public static void updateScoreboard() {
+    public static void updateScoreboards() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             Scoreboard scoreboard = player.getScoreboard();
             Objective objective = scoreboard.getObjective("timer");
