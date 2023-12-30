@@ -12,7 +12,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
-import uhcplugin.uhcplugin.game.PlayersStatusManager;
 import uhcplugin.uhcplugin.handlers.DeathHandler;
 
 import org.bukkit.Bukkit;
@@ -27,8 +26,6 @@ public class UhcGame {
 
     private List<Player> players;
     
-    private List<Player> players;
-
     private List<Team> Teams;
     
     private Timer Timer;
@@ -42,7 +39,7 @@ public class UhcGame {
 
         this.MainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
-        this.scoreboards = createScoreboards();
+        createPlayerScoreboards();
         new Timer(this.plugin);
 
         enableTeaming();
@@ -52,46 +49,58 @@ public class UhcGame {
 
 
     private void spawnPlayers() {        
-        // if(onlinePlayers.size() == 12) {
-            Location[] SpawnLocations = { // TODO: Set coords
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0),
-                new Location(null, 0, 0, 0)
-            };
-            // TODO: Readaptable???
+    // if(onlinePlayers.size() == 12) {
+        Location[] SpawnLocations = { // TODO: Set coords
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0),
+            new Location(null, 0, 0, 0)
+        };
+        // TODO: Readaptable???
 
-            for (int i = 0; i < this.players.size(); i++) {
-                Player player = this.players.get(i);
+        for (int i = 0; i < this.players.size(); i++) {
+            Player player = this.players.get(i);
 
-                player.teleport(SpawnLocations[i]);
-                player.setScoreboard();
+            player.teleport(SpawnLocations[i]);
+            player.setScoreboard();
 
-                player.setHealth(20);
-                player.setFoodLevel(20);
-                // To avoid fall damage
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, durationSeconds * 20, 255));
-            }
-        // } else {
-            
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            // To avoid fall damage
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, durationSeconds * 20, 255));
         }
+    // } else {
+        
+    }
 
-    private void enableTeaming() {
-        for (int i = 0; i < 4; i++) {
-            Scoreboard.registerNewTeam(String.format("Team %s", i));   
+    private void createPlayerScoreboards() {
+        for (Player player : this.players) {
+            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
     }
 
+
+
+    private void enableTeaming() {
+        for (int i = 0; i < 4; i++) {
+            this.MainScoreboard.registerNewTeam(String.format("Team %s", i));   
+        }
+
+        // Teaming listener + logic (assign first empty team, notify other players???)
+        // Create glowing listener 
+        // register compass
+    }
+
     private void enableRandomSkinCycles() {
-  
+        // Look up crimson's plugins and IO plugin library
     }
 
     public void handleTeamChange(Player player, Team oldTeam, Team newTeam) {
