@@ -34,12 +34,10 @@ public class UhcGame {
         this.plugin = plugin;
         this.players = (List<Player>) plugin.getServer().getOnlinePlayers();
 
+        this.MainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         new DeathHandler(this, this.plugin);
         spawnPlayers();
-
-        this.MainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-
-        createPlayerScoreboards();
+        
         new Timer(this.plugin);
 
         enableTeaming();
@@ -70,7 +68,7 @@ public class UhcGame {
             Player player = this.players.get(i);
 
             player.teleport(SpawnLocations[i]);
-            player.setScoreboard();
+            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 
             player.setHealth(20);
             player.setFoodLevel(20);
@@ -79,12 +77,6 @@ public class UhcGame {
         }
     // } else {
         
-    }
-
-    private void createPlayerScoreboards() {
-        for (Player player : this.players) {
-            player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
-        }
     }
 
 
