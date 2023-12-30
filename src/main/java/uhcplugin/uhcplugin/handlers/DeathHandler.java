@@ -13,7 +13,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
  * DeathHandler
  */
 public class DeathHandler implements Listener {
-    public DeathHandler(UhcGame game, Plugin plugin) {
+    public DeathHandler(UhcGame game, Plugin plugin) { // TODO: Why passing the UHC game???
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
