@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -22,12 +24,14 @@ public class UhcGame {
 
     private Plugin plugin;
 
+    private int desiredNumberOfTeams = 4;
+    
+    private int currentNumberOfTeams = 0;
+
     private Scoreboard MainScoreboard;
 
     private List<Player> players;
-    
-    private List<Team> Teams;
-    
+        
     private Timer Timer;
   
     public UhcGame(Plugin plugin) {
@@ -35,13 +39,14 @@ public class UhcGame {
         this.players = (List<Player>) plugin.getServer().getOnlinePlayers();
 
         this.MainScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
         new DeathHandler(this, this.plugin);
         spawnPlayers();
-        
+
         new Timer(this.plugin);
 
         enableTeaming();
-            // enable teaming (createTeams, click event, proxy event)
+
         enableRandomSkinCycles();
     }
 
@@ -82,9 +87,10 @@ public class UhcGame {
 
 
     private void enableTeaming() {
-        for (int i = 0; i < 4; i++) {
-            this.MainScoreboard.registerNewTeam(String.format("Team %s", i));   
-        }
+        // for (int i = 0; i < this.desiredNumberOfTeams; i++) {
+        //     this.MainScoreboard.registerNewTeam(String.format("Team %s", i));
+        //     Bukkit.getScoreboardManager().getNewScoreboard();
+        // }
 
         // Teaming listener + logic (assign first empty team, notify other players???)
         // Create glowing listener 
