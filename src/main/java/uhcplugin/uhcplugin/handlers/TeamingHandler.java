@@ -3,6 +3,8 @@ package uhcplugin.uhcplugin.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+
+import org.bukkit.scoreboard.Team;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import uhcplugin.uhcplugin.Plugin;
@@ -16,10 +18,25 @@ public class TeamingHandler implements Listener{
 
     public void onPlayerRightClick(PlayerInteractEntityEvent event) {
         if (event.getRightClicked() instanceof Player) {
-            Player target = (Player) event.getRightClicked();
-            // TODO: If target has a team stop
             Player player = event.getPlayer();
-            // If player has a team add to the team, if not, check for teamcap then create one
+            Player target = (Player) event.getRightClicked();
+
+            Team PlayerTeam = player.getScoreboard().getEntryTeam(player.getName());
+            Team TargetTeam = target.getScoreboard().getEntryTeam(target.getName());
+            
+            if (TargetTeam != null) {
+                return;
+            }
+
+            if (PlayerTeam == null) {
+                // create team (create team scoreboard, register team, add player, set player scoreboard)
+            }
+
+            if (PlayerTeam.getEntries().size() == 3) {
+                return;
+            }
+
+            // Add target
 
             // TODO: Reveal skins 💀💀💀
             String[] playerMsg = {
@@ -35,6 +52,7 @@ public class TeamingHandler implements Listener{
 
             player.sendMessage(playerMsg);
             target.sendMessage(targetMsg);
+            
         }
     }
 }

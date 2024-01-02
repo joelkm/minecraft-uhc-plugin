@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -15,6 +13,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import uhcplugin.uhcplugin.handlers.DeathHandler;
+import uhcplugin.uhcplugin.handlers.TeamingHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.EventExecutor;
@@ -43,11 +42,10 @@ public class UhcGame {
         new DeathHandler(this, this.plugin);
         spawnPlayers();
 
-        new Timer(this.plugin);
+        new Timer(this.plugin); // TODO: Start timer and event listeners
 
+        enableRandomSkinCycles(); // TODO: Do smthn to avoid random skin change while in teams
         enableTeaming();
-
-        enableRandomSkinCycles();
     }
 
 
@@ -78,7 +76,7 @@ public class UhcGame {
             player.setHealth(20);
             player.setFoodLevel(20);
             // To avoid fall damage
-            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, durationSeconds * 20, 255));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60 * 20, 255));
         }
     // } else {
         
@@ -87,6 +85,8 @@ public class UhcGame {
 
 
     private void enableTeaming() {
+        new TeamingHandler(this.plugin);
+
         // for (int i = 0; i < this.desiredNumberOfTeams; i++) {
         //     this.MainScoreboard.registerNewTeam(String.format("Team %s", i));
         //     Bukkit.getScoreboardManager().getNewScoreboard();
@@ -99,12 +99,5 @@ public class UhcGame {
 
     private void enableRandomSkinCycles() {
         // Look up crimson's plugins and IO plugin library
-    }
-
-    public void handleTeamChange(Player player, Team oldTeam, Team newTeam) {
-        oldTeam.removeEntry(player);
-        newTeam.addEntry(player);
-    
-        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
     }
 }
